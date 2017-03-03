@@ -11,11 +11,7 @@ class Midtrans {
 	//
 	var $serverKey;
 	//
-	var $paymentType;
-	var $paymentDetails;
-	var $transactionDetails;
-	var $customerDetails;
-	var $itemDetails;
+	var $requestBody;
 
 	public function setEnvironment($environment) {
 		if ($environment == 'development' || $environment == 'production') {
@@ -34,7 +30,8 @@ class Midtrans {
 		}
 	 */
 	public function setTransactionDetails($transactionDetails) {
-		$this->transactionDetails = ['transaction_details' => $transactionDetails];
+		$this->requestBody['transaction_details'] = $transactionDetails;
+		return $this;
 	}
 	
 	/* https://api-docs.midtrans.com/#customer-details
@@ -64,7 +61,8 @@ class Midtrans {
 	  }
 	*/
 	public function setCustomerDetails($customerDetails) {
-		$this->customerDetails = ['customer_details' => $customerDetails];
+		$this->requestBody['customer_details'] = $customerDetails;
+		return $this;
 	}
 	
 	/* https://api-docs.midtrans.com/#item-details
@@ -82,14 +80,14 @@ class Midtrans {
 		  }]
 	 */
 	public function setItemDetails($itemDetails) {
-		$this->itemDetails = ['item_details' => $itemDetails];
+		$this->requestBody['item_details'] = $itemDetails;
+		return $this;
 	}
 
 	public function setPaymentType($paymentType, $paymentDetails) {
-		$this->paymentType = ['payment_type' => $paymentType];
-		$this->paymentDetails = [
-			$paymentType => $paymentDetails
-		];
+		$this->requestBody['payment_type'] = $paymentType;
+		$this->requestBody[$paymentType] =  $paymentDetails;
+		return $this;
 	}
 
 	//
@@ -100,9 +98,7 @@ class Midtrans {
 			$url = $this->development;
 		}
 		
-		$requestBody = json_encode(array_merge($this->paymentType, $this->paymentDetails, $this->transactionDetails, $this->itemDetails, $this->customerDetails));
-
-		return Requests::post($url . 'charge', $this->_getHeader(), $requestBody);
+		return Requests::post($url . 'charge', $this->_getHeader(), json_encode($this->requestBody));
 	}
 
 	private function _getHeader() {
