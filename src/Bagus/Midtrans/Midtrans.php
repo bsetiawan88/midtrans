@@ -1,6 +1,7 @@
 <?php
 
 namespace Bagus\Midtrans;
+use Requests;
 
 class Midtrans {
 
@@ -33,7 +34,7 @@ class Midtrans {
 		}
 	 */
 	public function setTransactionDetails($transactionDetails) {
-		$this->transactionDetails = $transactionDetails;
+		$this->transactionDetails = ['transaction_details' => $transactionDetails];
 	}
 	
 	/* https://api-docs.midtrans.com/#customer-details
@@ -63,7 +64,7 @@ class Midtrans {
 	  }
 	*/
 	public function setCustomerDetails($customerDetails) {
-		$this->customerDetails($customerDetails);
+		$this->customerDetails = ['customer_details' => $customerDetails];
 	}
 	
 	/* https://api-docs.midtrans.com/#item-details
@@ -81,11 +82,11 @@ class Midtrans {
 		  }]
 	 */
 	public function setItemDetails($itemDetails) {
-		$this->itemDetails = $itemDetails;
+		$this->itemDetails = ['item_details' => $itemDetails];
 	}
 
 	public function setPaymentType($paymentType, $paymentDetails) {
-		$this->paymentType = $paymentType;
+		$this->paymentType = ['payment_type' => $paymentType];
 		$this->paymentDetails = [
 			$paymentType => $paymentDetails
 		];
@@ -99,7 +100,9 @@ class Midtrans {
 			$url = $this->development;
 		}
 		
-		return Requests::post($url . 'charge', $this->_getHeader(), array_merge($this->paymentType, $this->paymentDetails, $this->transactionDetails, $this->itemDetails, $this->customerDetails));
+		$requestBody = json_encode(array_merge($this->paymentType, $this->paymentDetails, $this->transactionDetails, $this->itemDetails, $this->customerDetails));
+
+		return Requests::post($url . 'charge', $this->_getHeader(), $requestBody);
 	}
 
 	private function _getHeader() {
