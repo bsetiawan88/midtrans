@@ -8,6 +8,7 @@ class Midtrans {
 	var $environment = 'developent';
 	var $development = 'https://api.sandbox.midtrans.com/v2/';
 	var $production = 'https://api.midtrans.com/v2/';
+	var $url;
 	//
 	var $serverKey;
 	//
@@ -43,10 +44,16 @@ class Midtrans {
 		$this->requestBody[$paymentType] =  $paymentDetails;
 		return $this;
 	}
+		
+	public function setUrl($url) {
+		$this->url = $url;
+	}
 
 	public function charge() {
 		if ($this->environment == 'production') {
 			$url = $this->production;
+		} else if (!empty($this->url) ){
+			$url = $this->url;
 		} else {
 			$url = $this->development;
 		}
