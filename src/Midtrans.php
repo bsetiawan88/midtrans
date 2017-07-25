@@ -10,7 +10,7 @@ class Midtrans
 	CONST DEV_URL = 'https://api.sandbox.midtrans.com/v2/';
 	CONST PROD_URL = 'https://api.midtrans.com/v2/';
 
-	var $environment = 'developent';
+	var $environment = 'development';
 	var $url;
 	var $options = [];
 	var $serverKey;
