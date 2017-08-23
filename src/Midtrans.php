@@ -7,8 +7,8 @@ use Requests;
 class Midtrans
 {
 
-	CONST DEV_URL = 'https://api.sandbox.midtrans.com/v2/';
-	CONST PROD_URL = 'https://api.midtrans.com/v2/';
+	CONST DEV_URL = 'https://api.sandbox.midtrans.com/v2';
+	CONST PROD_URL = 'https://api.midtrans.com/v2';
 
 	var $environment = 'development';
 	var $url;
@@ -69,7 +69,7 @@ class Midtrans
 
 	public function charge()
 	{
-		return Requests::post($this->_getUrl() . 'charge', $this->_getHeader(), json_encode($this->requestBody), $this->options);
+		return Requests::post($this->_getUrl() . '/charge', $this->_getHeader(), json_encode($this->requestBody), $this->options);
 	}
 
 	public function checkStatus($id)
