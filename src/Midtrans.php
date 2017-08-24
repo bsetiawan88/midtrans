@@ -74,7 +74,7 @@ class Midtrans
 
 	public function checkStatus($id)
 	{
-		return Requests::get($this->_getUrl() . $id . '/status', $this->_getHeader(), $this->options);
+		return Requests::get($this->_getUrl() . '/' . $id . '/status', $this->_getHeader(), $this->options);
 	}
 
 	private function _getHeader()
