@@ -62,6 +62,12 @@ class Midtrans
 		return $this;
 	}
 
+	public function setExpiry($expiry)
+	{
+		$this->requestBody['expiry'] = $expiry;
+		return $this;
+	}
+
 	public function setUrl($url)
 	{
 		$this->url = $url;
